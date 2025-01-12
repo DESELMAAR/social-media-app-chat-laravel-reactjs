@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <!-- Add Google Fonts link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      /* Global styles */
+      body {
+        margin: 0;
+        padding: 10px;
+        min-height: 100vh;
+        background-color: rgb(27, 10, 43);
+        color: white; /* Optional: Set default text color to white */
+        font-family: 'Poppins', sans-serif; /* Use Poppins as the default font */
+      }
+
+      /* Responsive padding */
+      @media (min-width: 640px) {
+        body {
+          padding: 20px;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        body {
+          padding: 30px;
+        }
+      }
+
+      /* Ensure the root div takes full height */
+      #root {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
