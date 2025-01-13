@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "../api"; // Import the axios instance
-
-const RegisterPage = () => {
+import { useParams } from "react-router-dom";
+const EditProfilePage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,12 +10,29 @@ const RegisterPage = () => {
   const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null); // State for the image file
   const [error, setError] = useState(""); // State to handle errors
-  const [isVisible, setIsVisible] = useState(false); // State for transition
   const navigate = useNavigate(); // Hook for navigation
-
+  const { id } = useParams();
+  // Fetch current user data on component mount
   useEffect(() => {
-    setIsVisible(true); // Trigger the transition when the component mounts
-  }, []);
+    const fetchUserData = async () => {
+      try {
+        const response = await api.get(`/edit/${id}`);// Replace with your API endpoint
+        const userData = response.data;
+
+        // Populate form fields with current user data
+        setName(userData.name);
+        setEmail(userData.email);
+        setGender(userData.gender);
+        setPhone(userData.phone);
+
+        
+      } catch (err) {
+        setError("Failed to fetch user data. Please try again.");
+      }
+    };
+
+    fetchUserData();
+  }, [id]);
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -36,24 +53,24 @@ const RegisterPage = () => {
     }
 
     try {
-      // Make the API call to register the user
-      const response = await api.post("/register", formData, {
+      // Make the API call to update the user profile
+      const response = await api.put("/user/update", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Set the content type for file upload
         },
       });
 
-      // Handle successful registration
-      console.log("Registration successful:", response.data);
+      // Handle successful update
+      console.log("Profile updated successfully:", response.data);
 
-      // Redirect to the login page or dashboard
-      navigate("/login"); // Redirect to the login page
+      // Redirect to the profile page or dashboard
+      navigate("/profile"); // Redirect to the profile page
     } catch (err) {
       // Handle errors
       if (err.response) {
         // Server responded with an error
         setError(
-          err.response.data.message || "Registration failed. Please try again."
+          err.response.data.message || "Update failed. Please try again."
         );
       } else {
         // Network or other errors
@@ -100,74 +117,21 @@ const RegisterPage = () => {
 
           {/* Tagline */}
           <p className="text-lg text-slate-200 mb-4">
-            Connect with friends, share moments, and explore the world.
+            Update your profile to keep your information current.
           </p>
-
-          {/* Features List */}
-          <ul className="text-left text-slate-300 space-y-2">
-            <li className="flex items-center space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-indigo-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Real-time messaging</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-indigo-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Share photos and videos</span>
-            </li>
-            <li className="flex items-center space-x-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-indigo-400"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>Join communities and groups</span>
-            </li>
-          </ul>
         </div>
       </div>
 
-      {/* Right Section - Register Form */}
+      {/* Right Section - Edit Profile Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
-        <div
-          className={`bg-white p-6 rounded-lg shadow-lg w-full max-w-sm transition-all duration-500 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-          }`}
-        >
+        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
           <h2 className="text-xl font-bold text-slate-800 mb-4 text-center">
-            Register
+            Edit Profile
           </h2>
           {error && (
             <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
           )}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="">
             {/* Name Input */}
             <div className="mb-3">
               <label
@@ -212,7 +176,7 @@ const RegisterPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-slate-600"
               >
-                Password
+                New Password (optional)
               </label>
               <input
                 type="password"
@@ -220,8 +184,7 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                placeholder="Enter your password"
-                required
+                placeholder="Enter a new password"
               />
             </div>
 
@@ -284,31 +247,18 @@ const RegisterPage = () => {
               />
             </div>
 
-            {/* Register Button */}
+            {/* Update Button */}
             <button
               type="submit"
               className="w-full bg-slate-800 text-white py-2 rounded-lg hover:bg-slate-700 transition-colors"
             >
-              Register
+              Update Profile
             </button>
           </form>
-
-          {/* Login Link */}
-          <div className="mt-4 text-center">
-            <p className="text-sm text-slate-600">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-slate-800 font-semibold hover:underline"
-              >
-                Login
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default RegisterPage;
+export default EditProfilePage;

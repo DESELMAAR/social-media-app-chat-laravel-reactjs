@@ -10,6 +10,7 @@ html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
   scroll-padding-top: 4rem; /* Adjust based on your header height */
+  max-height: fit-content;
 }
 
 /* Add this to your CSS file or style section */
@@ -24,20 +25,41 @@ html {
   transform: translateY(0);
 }
 
-
-/* Hide scrollbar for Chrome, Safari, and Opera */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge, and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 body {
-  overflow: hidden;
+  background-image: linear-gradient(
+    rgba(14, 50, 94, 0.6), /* Soft blue */
+    rgba(40, 4, 77, 0.6) /* Soft purple */
+  ), url("bg2.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+
+
+.form-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.form-transition.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.form-transition {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.form-transition.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
@@ -51,24 +73,19 @@ body {
   scrollbar-width: none; /* Firefox */
 }
 
-/* Hide scrollbar for Chrome, Safari, and Opera */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-/* Hide scrollbar for IE, Edge, and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
-/* Hide scrollbar for Chrome, Safari, and Opera */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge, and Firefox */
-.scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+.animate-gradient {
+  background-size: 400% 400%; /* Increased background size for more visible movement */
+  animation: gradientAnimation 2s ease infinite; /* Faster animation (2s instead of 3s) */
 }

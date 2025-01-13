@@ -39,6 +39,66 @@ const Home = () => {
       comments: 10,
       timestamp: "1 day ago",
     },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
+    {
+      id: 3,
+      username: "user3",
+      profilePic: "https://via.placeholder.com/40",
+      text: "Exploring new places. Travel is life! ✈️",
+      image: "https://via.placeholder.com/600x400",
+      likes: 50,
+      comments: 10,
+      timestamp: "1 day ago",
+    },
     // Add more posts as needed
   ];
 
@@ -58,12 +118,12 @@ const Home = () => {
   return (
     <div className="max-w-2xl mx-auto h-screen flex flex-col">
       {/* New Post Button */}
-      <div className="sticky top-0 z-10 py-4">
+      <div className="sticky top-0 z-10 bg-transparent px-4">
         {!showForm && (
-          <div className="flex justify-center">
+          <div className="flex justify-center bg-transparent">
             <button
               onClick={() => setShowForm(true)}
-              className="w-28 bg-fuchsia-800 opacity-40 hover:opacity-80 text-white py-2 rounded-lg transition-colors"
+              className="w-28 bg-gradient-to-r from-fuchsia-500 to-purple-700 text-white py-2 rounded-lg transition-colors relative overflow-hidden hover:opacity-90 animate-gradient shadow-lg hover:shadow-xl"
             >
               New Post
             </button>
