@@ -1,112 +1,70 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from '../api'; // Import the axios instance
+import EditPost from './EditPost'; // Import the EditPost component
 
 const Home = () => {
-  // State to manage the visibility of the new post form
   const [showForm, setShowForm] = useState(false);
-
-  // State to manage the content of the new post
   const [postContent, setPostContent] = useState("");
+  const [posts, setPosts] = useState([]); // Initialize as an empty array
+  const [editingPostId, setEditingPostId] = useState(null); // Track which post is being edited
 
-  // Static posts data
-  const posts = [
-    {
-      id: 1,
-      username: "user1",
-      profilePic: "https://via.placeholder.com/40",
-      text: "This is the first post. Enjoying the day! 🌞",
-      image: "https://via.placeholder.com/600x400",
-      likes: 10,
-      comments: 2,
-      timestamp: "2 hours ago",
-    },
-    {
-      id: 2,
-      username: "user2",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Just finished a great workout! 💪",
-      image: "https://via.placeholder.com/600x400",
-      likes: 25,
-      comments: 5,
-      timestamp: "5 hours ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    {
-      id: 3,
-      username: "user3",
-      profilePic: "https://via.placeholder.com/40",
-      text: "Exploring new places. Travel is life! ✈️",
-      image: "https://via.placeholder.com/600x400",
-      likes: 50,
-      comments: 10,
-      timestamp: "1 day ago",
-    },
-    // Add more posts as needed
-  ];
+  // Fetch posts on component mount
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-  // Handle form submission
-  const handlePublish = () => {
-    alert(`New post published: ${postContent}`);
-    setPostContent(""); // Clear the textarea
-    setShowForm(false); // Hide the form
+  // Function to fetch posts
+  const fetchPosts = async () => {
+    try {
+      const response = await api.get('/posts');
+      // Ensure the response data is an array
+      if (Array.isArray(response.data.posts)) {
+        setPosts(response.data.posts);
+      } else {
+        console.error("Expected an array but got:", response.data.posts);
+        setPosts([]); // Set to empty array if data is not in expected format
+      }
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
+      setPosts([]); // Set to empty array on error
+    }
+  };
+
+  // Function to handle publishing a new post
+  const handlePublish = async () => {
+    try {
+      const response = await api.post('/posts', { text: postContent });
+      setPosts([response.data.posts, ...posts]); // Add the new post to the beginning of the list
+      setPostContent(""); // Clear the textarea
+      setShowForm(false); // Hide the form
+    } catch (error) {
+      console.error("Failed to publish post:", error);
+    }
+  };
+
+  // Function to handle updating a post
+  const handleUpdate = async (id, updatedText) => {
+    try {
+      const response = await api.put(`/posts/${id}`, { text: updatedText });
+      const updatedPosts = posts.map(post => 
+        post.id === id ? response.data : post
+      );
+      setPosts(updatedPosts);
+      setEditingPostId(null); // Stop editing after update
+    } catch (error) {
+      console.error("Failed to update post:", error);
+    }
+  };
+
+  // Function to handle deleting a post
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/posts/${id}`);
+      const updatedPosts = posts.filter(post => post.id !== id);
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
   };
 
   // Handle form cancellation
@@ -132,24 +90,24 @@ const Home = () => {
 
         {/* New Post Form */}
         {showForm && (
-          <div className="bg-white shadow-md rounded-lg p-4">
+          <div className="bg-slate-950 shadow-md rounded-lg p-4">
             <textarea
               value={postContent}
               onChange={(e) => setPostContent(e.target.value)}
               placeholder="What's on your mind?"
-              className="w-full p-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full p-2 border border-gray-700 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-900 text-slate-300"
               rows={3}
             />
             <div className="flex justify-end space-x-2 mt-2">
               <button
                 onClick={handleCancel}
-                className="text-blue-600 text-sm font-semibold transition-colors"
+                className="text-slate-300 text-sm font-semibold transition-colors hover:text-blue-500"
               >
                 Cancel
               </button>
               <button
                 onClick={handlePublish}
-                className="text-indigo-950 text-sm font-semibold transition-colors"
+                className="text-slate-300 text-sm font-semibold transition-colors hover:text-indigo-500"
               >
                 Publish
               </button>
@@ -161,44 +119,69 @@ const Home = () => {
       {/* Posts Section */}
       <div className="flex-1 overflow-y-auto scrollbar-hide p-4">
         <div className="space-y-6">
-          {posts.map((post) => (
-            <div key={post.id} className="bg-white shadow-md rounded-lg p-4">
+          {Array.isArray(posts) && posts.map((post) => (
+            <div key={post.id} className="bg-slate-900 shadow-md rounded-lg p-4">
               {/* Post Header */}
               <div className="flex items-center space-x-3 mb-4">
                 <img
-                  src={post.profilePic}
-                  alt={`${post.username}'s profile`}
+                  src={"http://127.0.0.1:8000" + (post.user?.image?.slice(16) || "")}
+                  alt={`${post.user?.name || "Unknown"}'s profile`}
                   className="w-10 h-10 rounded-full"
                 />
                 <div>
-                  <p className="font-semibold">{post.username}</p>
-                  <p className="text-sm text-gray-500">{post.timestamp}</p>
+                  <p className="font-semibold text-slate-300">{post.user?.name || "Unknown"}</p>
+                  <p className="text-sm text-slate-300">{post.updated_at?.slice(0, 10) || ""}</p>
                 </div>
               </div>
 
-              {/* Post Text */}
-              <p className="mb-4">{post.text}</p>
-
-              {/* Post Image */}
-              {post.image && (
-                <img
-                  src={post.image}
-                  alt="Post"
-                  className="w-full h-auto rounded-lg mb-4"
+              {/* Render EditPost component if the post is being edited */}
+              {editingPostId === post.id ? (
+                <EditPost
+                  post={post}
+                  onUpdate={handleUpdate}
+                  onCancel={() => setEditingPostId(null)}
                 />
-              )}
+              ) : (
+                <>
+                  {/* Post Text */}
+                  <p className="mb-4 text-slate-300">{post.content}</p>
 
-              {/* Post Actions */}
-              <div className="flex items-center space-x-4 text-gray-600">
-                <button className="flex items-center space-x-2 hover:text-blue-500">
-                  <span>👍</span>
-                  <span>{post.likes} Likes</span>
-                </button>
-                <button className="flex items-center space-x-2 hover:text-blue-500">
-                  <span>💬</span>
-                  <span>{post.comments} Comments</span>
-                </button>
-              </div>
+                  {/* Post Image */}
+                  {post.image && (
+                    <img
+                      src={"http://127.0.0.1:8000" + (post.image.slice(16) || "")}
+                      alt="Post"
+                      className="w-full h-auto rounded-lg mb-4"
+                    />
+                  )}
+
+                  {/* Post Actions */}
+                  <div className="flex items-center space-x-4 text-slate-300">
+                    <button className="flex items-center space-x-2 hover:text-blue-500">
+                      <span>👍</span>
+                      <span>{post.likes} Likes</span>
+                    </button>
+                    <button className="flex items-center space-x-2 hover:text-blue-500">
+                      <span>💬</span>
+                      <span>{post.comments} Comments</span>
+                    </button>
+                    <button
+                      onClick={() => setEditingPostId(post.id)}
+                      className="flex items-center space-x-2 hover:text-green-500"
+                    >
+                      <span>✏️</span>
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(post.id)}
+                      className="flex items-center space-x-2 hover:text-red-500"
+                    >
+                      <span>🗑️</span>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         </div>

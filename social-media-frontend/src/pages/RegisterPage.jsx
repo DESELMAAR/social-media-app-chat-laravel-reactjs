@@ -157,149 +157,151 @@ const RegisterPage = () => {
       {/* Right Section - Register Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-12">
         <div
-          className={`bg-white p-6 rounded-lg shadow-lg w-full max-w-sm transition-all duration-500 ease-out ${
+          className={`bg-white p-8 rounded-lg shadow-lg w-full max-w-xl transition-all duration-500 ease-out ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
         >
-          <h2 className="text-xl font-bold text-slate-800 mb-4 text-center">
+          <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">
             Register
           </h2>
           {error && (
             <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
           )}
           <form onSubmit={handleSubmit}>
-            {/* Name Input */}
-            <div className="mb-3">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                placeholder="Enter your name"
-                required
-              />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Name Input */}
+              <div className="mb-4">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
 
-            {/* Email Input */}
-            <div className="mb-3">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                placeholder="Enter your email"
-                required
-              />
-            </div>
+              {/* Email Input */}
+              <div className="mb-4">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
 
-            {/* Password Input */}
-            <div className="mb-3">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                placeholder="Enter your password"
-                required
-              />
-            </div>
+              {/* Password Input */}
+              <div className="mb-4">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
 
-            {/* Gender Input */}
-            <div className="mb-3">
-              <label
-                htmlFor="gender"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Gender
-              </label>
-              <select
-                id="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                required
-              >
-                <option value="" disabled>
-                  Select your gender
-                </option>
-                <option value={0}>Male</option>
-                <option value={1}>Female</option>
-              </select>
-            </div>
+              {/* Gender Input */}
+              <div className="mb-4">
+                <label
+                  htmlFor="gender"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Gender
+                </label>
+                <select
+                  id="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  required
+                >
+                  <option value="" disabled>
+                    Select your gender
+                  </option>
+                  <option value={0}>Male</option>
+                  <option value={1}>Female</option>
+                </select>
+              </div>
 
-            {/* Phone Input */}
-            <div className="mb-3">
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Phone
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                placeholder="Enter your phone number"
-                required
-              />
-            </div>
+              {/* Phone Input */}
+              <div className="mb-4">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Phone
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
 
-            {/* Image Upload Input */}
-            <div className="mb-4">
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-slate-600"
-              >
-                Profile Image
-              </label>
-              <input
-                type="file"
-                id="image"
-                onChange={handleImageChange}
-                className="w-full px-3 py-2 mt-1 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
-                accept="image/*" // Accept only image files
-              />
+              {/* Image Upload Input */}
+              <div className="mb-6">
+                <label
+                  htmlFor="image"
+                  className="block text-sm font-medium text-slate-600 font-bold"
+                >
+                  Profile Image
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  onChange={handleImageChange}
+                  className="w-full px-4 py-3 mt-1 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold text-purple-800"
+                  accept="image/*" // Accept only image files
+                />
+              </div>
             </div>
 
             {/* Register Button */}
             <button
               type="submit"
-              className="w-full bg-slate-800 text-white py-2 rounded-lg hover:bg-slate-700 transition-colors"
+              className="w-full bg-purple-800 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-bold text-lg"
             >
               Register
             </button>
           </form>
 
           {/* Login Link */}
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             <p className="text-sm text-slate-600">
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="text-slate-800 font-semibold hover:underline"
+                className="text-purple-800 font-semibold hover:underline"
               >
                 Login
               </Link>

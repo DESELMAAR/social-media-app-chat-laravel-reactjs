@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../api"; // Import the axios instance
-import { useParams } from "react-router-dom";
+
 const EditProfilePage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,13 +11,14 @@ const EditProfilePage = () => {
   const [image, setImage] = useState(null); // State for the image file
   const [error, setError] = useState(""); // State to handle errors
   const navigate = useNavigate(); // Hook for navigation
-  const { id } = useParams();
+  const { id } = useParams(); // Get the user ID from the URL
+
   // Fetch current user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get(`/edit/${id}`);// Replace with your API endpoint
-        const userData = response.data;
+        const response = await api.get(`/edit/${id}`); // Fetch user data
+        const userData = response.data.user; // Access the user object from the response
 
         // Populate form fields with current user data
         setName(userData.name);
@@ -25,7 +26,9 @@ const EditProfilePage = () => {
         setGender(userData.gender);
         setPhone(userData.phone);
 
-        
+        // If the user has an image, you can set it in the state (optional)
+        // setImage(userData.image); // Uncomment if you want to pre-fill the image
+
       } catch (err) {
         setError("Failed to fetch user data. Please try again.");
       }
@@ -37,10 +40,10 @@ const EditProfilePage = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     // Clear previous errors
     setError("");
-
+  
     // Create a FormData object to handle file uploads
     const formData = new FormData();
     formData.append("name", name);
@@ -51,20 +54,26 @@ const EditProfilePage = () => {
     if (image) {
       formData.append("image", image); // Append the image file
     }
-
+  
+    // Log the FormData to check if it's populated correctly
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+  
     try {
       // Make the API call to update the user profile
-      const response = await api.put("/user/update", formData, {
+      const response = await api.put(`/users/${id}`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Set the content type for file upload
+          "Content-Type": "application/json", // Set the content type for file upload
         },
       });
-
+  
       // Handle successful update
       console.log("Profile updated successfully:", response.data);
-
+  
       // Redirect to the profile page or dashboard
-      navigate("/profile"); // Redirect to the profile page
+      // navigate("/profile"); 
+      // Redirect to the profile page
     } catch (err) {
       // Handle errors
       if (err.response) {
@@ -131,7 +140,7 @@ const EditProfilePage = () => {
           {error && (
             <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
           )}
-          <form onSubmit={handleSubmit} className="">
+          <form onSubmit={handleSubmit} className=""  enctype="multipart/form-data">
             {/* Name Input */}
             <div className="mb-3">
               <label

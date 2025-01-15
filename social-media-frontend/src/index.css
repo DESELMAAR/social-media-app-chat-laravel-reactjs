@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 .font-logo {
   font-family: "Poppins", sans-serif;
 }
@@ -29,7 +31,7 @@ body {
   background-image: linear-gradient(
     rgba(14, 50, 94, 0.6), /* Soft blue */
     rgba(40, 4, 77, 0.6) /* Soft purple */
-  ), url("bg2.jpg");
+  ), url("cool-background (2).png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
